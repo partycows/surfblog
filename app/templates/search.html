@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang = en>
+{% extends "base.html" %}
+{% set active_page = 'search' %}
+{% block content %}
+<p><b>Search posts below:</b></p>
+
+<div class="container">
+    <form action="{{url_for('.searchresults')}}" method="get">
+          <div class="input-group">
+          <input type="text" class="round" placeholder="Search Posts" id="postsearch" name="postsearch">
+          <button type="submit" class="btn btn-primary" align="right">Search</button>
+        </div>
+    </form>
+  </div>
+  <br>
+<p><b>Search tags below:</b></p>
+
+  <div class="container">
+    <form action="{{url_for('.searchtags')}}" method="get">
+          <div class="input-group">
+          <input type="text" class="round" placeholder="Search Tags" id="tagsearch" name="tagsearch">
+          <button type="submit" class="btn btn-primary" align="right">Search</button>
+        </div>
+    </form>
+  </div>
+  <br>
+  <!-- post search -->
+<div class="container">
+{% if user.search_enabled==True %}
+
+{% if query==1 and len==0 %}
+<p>No results, man</p>
+{% endif %}
+
+{% if query==1 and len>0 %}
+{% for post in results %}
+<div class="col col-lg-6 test">
+{% if post.author.nickname %}
+<div class="personaltron">
+    <h1>{{post.title}}: </h1>
+    {% if post.link %}
+    <p><a href="{{post.link}}">{{post.link}}</a></p>
+    {% endif %}
+    <p>{{post.body}}</p>
+    <p class='hashtag'>
+    {% for tag in post.post_tags %}
+    {{tag}}
+    {% endfor %}
+    </p>
+    <p><dd>by <img src="{{post.author.avatar(20)}}"></img> {{post.author.nickname}}</dd></p>
+    <p><dd>{{post.post_time_form}}</dd></p>
+</div>
+{% else %}
+<div class="personaltron">
+    <h1>{{post.title}} </h1>
+    {% if post.link %}
+    <p><a href="{{post.link}}">{{post.link}}</a></p>
+    {% endif %}
+    <p>{{post.body}}</p>
+    <p class='hashtag'>
+    {% for tag in post.post_tags %}
+    {{tag}}
+    {% endfor %}
+    </p>
+    <p><dd>by <img src="{{post.author.avatar(20)}}"></img> {{post.author.email}}</dd></p>
+    <p><dd>{{post.post_time_form}}</dd></p>
+</div>
+{% endif %}
+</div>
+{% endfor %}
+{% endif %}
+
+{% endif %}
+
+<!-- non-whoosh search -->
+{% if user.search_enabled!=True %}
+
+{% if query==1 and nwlen==0 %}
+<p>No results, man</p>
+{% endif %}
+
+{% if query==1 and nwlen>0 %}
+{% for post in non_whoosh %}
+<div class="col col-lg-6 test">
+{% if post.author.nickname %}
+<div class="personaltron">
+    <h1>{{post.title}}: </h1>
+    {% if post.link %}
+    <p><a href="{{post.link}}">{{post.link}}</a></p>
+    {% endif %}
+    <p>{{post.body}}</p>
+    <p class='hashtag'>
+    {% for tag in post.post_tags %}
+    {{tag}}
+    {% endfor %}
+    </p>
+    <p><dd>by <img src="{{post.author.avatar(20)}}"></img> {{post.author.nickname}}</dd></p>
+    <p><dd>{{post.post_time_form}}</dd></p>
+</div>
+{% else %}
+<div class="personaltron">
+    <h1>{{post.title}} </h1>
+    {% if post.link %}
+    <p><a href="{{post.link}}">{{post.link}}</a></p>
+    {% endif %}
+    <p>{{post.body}}</p>
+    <p class='hashtag'>
+    {% for tag in post.post_tags %}
+    {{tag}}
+    {% endfor %}
+    </p>
+    <p><dd>by <img src="{{post.author.avatar(20)}}"></img> {{post.author.email}}</dd></p>
+    <p><dd>{{post.post_time_form}}</dd></p>
+</div>
+{% endif %}
+</div>
+{% endfor %}
+{% endif %}
+
+{% endif %}
+<!-- tag search whoosh-->
+{% if user.search_enabled==True %}
+
+{% if query==2 and len==0 %}
+<p>No results, man</p>
+{% endif %}
+
+{% if query==2 and len>0 %}
+{% for post in results %}
+<div class="col col-lg-6 test">
+{% if post.author.nickname %}
+<div class="personaltron">
+    <h1>{{post.title}}: </h1>
+    {% if post.link %}
+    <p><a href="{{post.link}}">{{post.link}}</a></p>
+    {% endif %}
+    <p>{{post.body}}</p>
+    <p class='hashtag'>
+    {% for tag in post.post_tags %}
+    {{tag}}
+    {% endfor %}
+    </p>
+    <p><dd>by <img src="{{post.author.avatar(20)}}"></img> {{post.author.nickname}}</dd></p>
+    <p><dd>{{post.post_time_form}}</dd></p>
+</div>
+{% else %}
+<div class="personaltron">
+    <h1>{{post.title}} </h1>
+    {% if post.link %}
+    <p><a href="{{post.link}}">{{post.link}}</a></p>
+    {% endif %}
+    <p>{{post.body}}</p>
+    <p class='hashtag'>
+    {% for tag in post.post_tags %}
+    {{tag}}
+    {% endfor %}
+    </p>
+    <p><dd>by <img src="{{post.author.avatar(20)}}"></img> {{post.author.email}}</dd></p>
+    <p><dd>{{post.post_time_form}}</dd></p>
+</div>
+{% endif %}
+</div>
+{% endfor %}
+{% endif %}
+
+{% endif %}
+<!-- Tag search non-whoosh -->
+{% if user.search_enabled!=True %}
+{% if query==2 and nwlen==0 %}
+<p>No results, man</p>
+{% endif %}
+
+{% if query==2 and nwlen>0 %}
+{% for post in non_whoosh %}
+<div class="col col-lg-6 test">
+{% if post.author.nickname %}
+<div class="personaltron">
+    <h1>{{post.title}}: </h1>
+    {% if post.link %}
+    <p><a href="{{post.link}}">{{post.link}}</a></p>
+    {% endif %}
+    <p>{{post.body}}</p>
+    <p class='hashtag'>
+    {% for tag in post.post_tags %}
+    {{tag}}
+    {% endfor %}
+    </p>
+    <p><dd>by <img src="{{post.author.avatar(20)}}"></img> {{post.author.nickname}}</dd></p>
+    <p><dd>{{post.post_time_form}}</dd></p>
+</div>
+{% else %}
+<div class="personaltron">
+    <h1>{{post.title}} </h1>
+    {% if post.link %}
+    <p><a href="{{post.link}}">{{post.link}}</a></p>
+    {% endif %}
+    <p>{{post.body}}</p>
+    <p class='hashtag'>
+    {% for tag in post.post_tags %}
+    {{tag}}
+    {% endfor %}
+    </p>
+    <p><dd>by <img src="{{post.author.avatar(20)}}"></img> {{post.author.email}}</dd></p>
+    <p><dd>{{post.post_time_form}}</dd></p>
+</div>
+{% endif %}
+</div>
+{% endfor %}
+{% endif %}
+</div>
+{% endif %}
+
+{% endblock %}
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang = en>
+{% extends "base.html" %}
+{% set active_page = "index" %}
+{% block content %}
+{% if user.nickname %}
+<h1>Hi, {{user.nickname}}!</h1>
+<br>
+<h4>You can change your nickname in the profile above</h4>
+<br>
+{% else %}
+<h1>Hi, {{user.email}}!</h1>
+<br>
+<h4>No nickname is set right now, you can change that in the profile page above</h4>
+<br>
+{% endif %}
+<p>Say something now!</p>
+<form action="{{url_for('.add_entry')}}" method="post">
+    <dl>
+        <div class="row">
+        <dt>Title:
+        <dd>
+            <div class="col col-lg-6">
+            <input type="text" size=30 name="title">
+        </div>
+        </div>
+        <div class="row">
+        <dt>Link:
+        <dd>
+            <div class="col col-lg-6">
+            <input type="text" size=30 name="link"></textarea>
+        </div>
+        </div>
+        <div class="row">
+        <dt>Tags (write them like hashtags):
+        <dd>
+            <div class="col col-lg-6">
+                <input type="text" size=30 name="tags"></textarea>
+            </div>
+        </div>
+        <dt>Message:
+        <dd><textarea name="body" rows=5 cols=40></textarea>
+            <br>
+        <button type="submit" class="btn btn-primary">Post</button>
+      </dl>
+    </form>
+<h4>Your posts:</h4>
+<div class="container js-masonry">
+{% if user.posts.count()>0 %}
+{% for post in posts %}
+<div class="col col-lg-6 test">
+{% if user.nickname %}
+<div class="personaltron">
+    <h1>{{post.title}}: </h1>
+    {% if post.link %}
+    <p><a href="{{post.link}}">{{post.link}}</a></p>
+    {% endif %}
+    <p>{{post.body}}</p>
+    <p class='hashtag'>
+    {% for tag in post.post_tags %}
+    <form action="{{url_for('.searchtags')}}" method="post">
+    <button class="bitch-button" type="submit" value="{{tag}}" id="search" name="search" onclick="form.submit()">{{tag}}</button>
+    </form>
+    {% endfor %}
+    </p>
+    <p><dd>by <img src="{{post.author.avatar(20)}}"></img> {{post.author.nickname}}</dd></p>
+    <p><dd>{{post.post_time_form}}</dd></p>
+    <form action="{{url_for('.delete')}}" method="post">
+    <button type="submit" class="btn btn-danger btn-xs" value="{{post.id}}" id="delete" name="delete">Delete this post</button>
+    </form>
+</div>
+{% else %}
+<div class="personaltron">
+    <h1>{{post.title}} </h1>
+    {% if post.link %}
+    <p><a href="{{post.link}}">{{post.link}}</a></p>
+    {% endif %}
+    <p>{{post.body}}</p>
+    <p class='hashtag'>
+    {% for tag in post.post_tags %}
+    <form action="{{url_for('.searchtags')}}" method="post">
+    <button class="bitch-button" type="submit" value="{{tag}}" id="search" name="search">{{tag}}</button>
+    </form>    
+    {% endfor %}
+    </p>
+    <p><dd>by <img src="{{post.author.avatar(20)}}"></img> {{post.author.email}}</dd></p>
+    <p><dd>{{post.post_time_form}}</dd></p>
+    <form action="{{url_for('.delete')}}" method="post">
+    <button type="submit" class="btn btn-danger btn-xs" value="{{post.id}}" id="delete" name="delete">Delete this post</button>
+    </form>
+</div>
+{% endif %}
+</div>
+{% endfor %}
+
+{% else %}
+<div><p><dd>None right now. Say something below!</p></div>
+{% endif %}
+</div>
+<br>
+<!-- OTHER PEOPLE'S POSTS -->
+<h4>Dudes you're following: </h4>
+    <div class="container">
+    <div>
+    {% for user in followed_users %}
+    {% if user.nickname %}
+    <span>
+    {{user.nickname}}'s posts:
+</span>
+    {% else %}
+    <span>
+     {{user.email}}'s posts: 
+     {% endif %}
+ </span>
+     </div>  
+     <br>
+     <div class="container js-masonry">
+        {% for post in user.posts %}
+        <div class="col col-lg-6 test">
+        {% if user.nickname %}
+            <div class="followedtron">
+                <h1>{{post.title}} </h1>
+                {% if post.link %}
+                <p><a href="{{post.link}}">{{post.link}}</a></p>
+                {% endif %}
+                <p>{{post.body}}</p>
+                {% for tag in post.post_tags %}
+                <form action="{{url_for('.searchtags')}}" method="post">
+                <button class="bitch-button" type="submit" value="{{tag}}" id="search" name="search">{{tag}}</button>
+                </form>    
+                {% endfor %}
+                <p><dd>by <img src="{{post.author.avatar(20)}}"></img> {{post.author.nickname}}</dd></p>
+                <p><dd>{{post.post_time_form}}</dd></p>
+                <form action="{{url_for('.like')}}" method="post">
+    <button type="submit" class="btn btn-awesome btn-xs" value="{{post.id}}" id="like" name="like">Like this post</button>
+    </form>
+            </div>
+        {% else %}
+            <div class="followedtron">
+                <h1>{{post.title}} </h1>
+                {% if post.link %}
+                <p><a href="{{post.link}}">{{post.link}}</a></p>
+                {% endif %}
+                <p>{{post.body}}</p>
+                {% for tag in post.post_tags %}
+                <form action="{{url_for('.searchtags')}}" method="post">
+                <button class="bitch-button" type="submit" value="{{tag}}" id="search" name="search">{{tag}}</button>
+                </form>    
+                {% endfor %}
+                <p><dd>by <img src="{{post.author.avatar(20)}}"></img> {{post.author.email}}</dd></p>
+                <p><dd>{{post.post_time_form}}</dd></p>
+                <form action="{{url_for('.like')}}" method="post">
+    <button type="submit" class="btn btn-awesome btn-xs" value="{{post.id}}" id="like" name="like">Like this post</button>
+    </form>
+            </div>
+        {% endif %}
+        </div>
+        {% endfor %}
+    {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+</html>

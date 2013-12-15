@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang = en>
+<style>
+	.footer {
+	  padding-top: 19px;
+	  color: #777;
+	  border-top: 1px solid #e5e5e5;
+}
+</style>
+<b>
+{% if user.nickname %}
+<p>Hey {{user.nickname}}!</p>
+{% else %}
+<p>Hey {{user.email}}!</p>
+{% endif %}
+{% if follower.nickname %}
+<p>{{follower.nickname}} is now following you. Follow him/her back if you haven't already! Or don't, whatever.</p>
+{% else %}
+<p>{{follower.email}} is now following you. Follow him/her back if you haven't already! Or don't, whatever.</p>
+{% endif %}
+<br>
+<div class="footer"></div>
+<p>Your friendly surfblog admin</p>
+</b>
+</html>

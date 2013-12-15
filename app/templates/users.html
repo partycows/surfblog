@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang = en>
+{% extends "base.html" %}
+{% set active_page = 'users' %}
+{% block content %}
+<p><b>Follow any user below (except yourself):</b></p>
+{% for user in users %}
+<div class="container personaltron">
+{% if user.nickname %}
+<h1>{{user.nickname}}</h1>
+{% else %}
+<h1>{{user.email}}</h1>
+{% endif %}
+<br>
+<table>
+  <tr>
+<td><img src="{{user.avatar(64)}}"></img></td>
+<td>
+{% if user not in current_user.followed %}
+Click to follow!
+<form action="{{url_for('.follow')}}" method="post">
+    <button type="submit" class="btn btn-primary" id="userid" name="userid" value="{{user.id}}" align="right">Follow</button>
+</form>
+{% else %}
+Already Followed!
+<form action="{{url_for('.unfollow')}}" method="post">
+    <button type="submit" class="btn btn-disabled" id="userid1" name="userid1" value="{{user.id}}" align="right">Unfollow</button>
+</form>
+{% endif %}
+</td>
+</tr>
+</table>
+</div>
+{% endfor %}
+
+{% endblock %}
+</html>

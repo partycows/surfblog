@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang = en>
+{% extends "base.html" %}
+{% set active_page = 'settings' %}
+{% block content %}
+<div class="container personaltron">
+{% if user.nickname %}
+<h1>{{user.nickname}}'s Profile</h1>
+{% else %}
+<h1>{{user.email}}'s Profile</h1>
+{% endif %}
+<br>
+<table>
+  <tr valign="top" halign="left">
+<td><img src="{{user.avatar(120)}}"></img></td>
+<td>
+{% if user.bio %}
+  <p>{{user.bio}}</p>
+{% else %}
+  <p>You have no bio. Write one below?</p>
+{% endif %}
+</td>
+<td valign="bottom">Last Seen: {{user.last_seen_form}}</td>
+</tr>
+</table>
+</div>
+<h3>Change or set your nickname or password below:</h3>
+<div class="container">
+<form action="{{url_for('.changesettings')}}" method="post">
+  <div class="row">
+    <label for="password" class="col col-lg-2 control-label">New Password:</label>
+    <div class="col col-lg-3">
+      <input type="password" id="password" name="password" placeholder="Password">
+    </div>
+  </div>
+  <div class="row">
+    <label for="nickname" class="col col-lg-2 control-label">New Nickname:</label>
+    <div class="col col-lg-3">
+      <input type="text" id="nickname" name="nickname" placeholder="Nickname">
+    </div>
+  </div>
+  <br>
+  <div class="col col-lg-2 col-offset-10">
+    <dd><button type="submit" class="btn btn-primary">Save</button>
+    </div>
+    </form>
+    <br>
+  </div>
+  <div class="container">
+<form action="{{url_for('.changesettings')}}" method="post">
+  <div class="row">
+    <label for="postcolor" class="col col-lg-2 control-label">New Profile Card/Post Card Color:</label>
+  </div>
+  <br>
+  <div class="row">
+        <button type="submit" id="postcolor" name="postcolor" class="btn mango" value="#eea236">Mango</button>
+        <button type="submit" id="postcolor" name="postcolor" class="btn light-grey" value="#ccd4d9">Light Grey</button>
+        <button type="submit" id="postcolor" name="postcolor" class="btn teal" value="#98dad3">Teal</button>
+        <button type="submit" id="postcolor" name="postcolor" class="btn lavender" value="#b2b2f7">Lavender</button>
+        <button type="submit" id="postcolor" name="postcolor" class="btn green" value="#7abe93">Green</button>
+        <button type="submit" id="postcolor" name="postcolor" class="btn ketchup" value="#d43e3e">Ketchup</button>
+        <button type="submit" id="postcolor" name="postcolor" class="btn vomit" value="#ab9a61">Vomit</button>
+    </div>
+    </form>
+    <br>
+  </div>
+<h3>Set your bio below:</h3>
+<div class="container">
+<form action="{{url_for('.changesettings')}}" method="post">
+  <div class="row">
+    <label for="nickname" class="col col-lg-2 control-label">Bio:</label>
+    <div class="col col-lg-7">
+      <textarea name="bio" rows=5 cols=50 placeholder="Biography"></textarea>
+    </div>
+  </div>
+  <br>
+  <div class="col col-lg-2 col-offset-10">
+    <dd><button type="submit" class="btn btn-primary">Save</button>
+    </div>
+    </form>
+  </div>
+  <br>
+{% endblock %}
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=no">
+
+    {% if title %}
+    <title>{{title}} - surfblog</title>
+    {% else %}
+    <title>Surfblog</title>
+    {% endif %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css"></link>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jumbotron-narrow.css') }}" type="text/css"></link>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mblogcustoms.css') }}" type="text/css"></link>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mixins.less') }}" type="text/css"></link>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.less') }}" type="text/css"></link>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dropdown.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/alert.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tumble.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/collapse.js') }}"></script>
+    <script type="text/javascript.js"></script>
+
+    <script src="{{ url_for('static', filename='js/masonry.pkgd.min.js') }}"></script>
+
+    <style>
+      body{
+        margin-left:30px;
+        margin-right:30px;
+      }
+      .round {
+        border-bottom-right-radius: 4px;
+        border-top-right-radius: 4px;
+      }
+      ul li:nth-child(3n+3) {  
+        color: #ccc;
+      }
+      p {
+        word-break:break-all;
+      }
+      .btn-xs{padding:5px 10px;font-size:12px;line-height:1.5;border-radius:3px}.btn-xs{padding:1px 5px}
+      .btn-awesome{color:#ffffff;background-color:#874361;}.btn-awesome:hover{background-color:#76275f;},.btn-awesome:focus
+
+      .navbar .nav > li > .dropdown-menu::before {
+        position: absolute;
+        top: -7px;
+        left: 9px;
+        display: inline-block;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #CCC;
+        border-left: 7px solid transparent;
+        border-bottom-color: rgba(0, 0, 0, 0.2);
+        content: '';
+      }
+
+      .navbar .nav > li > .dropdown-menu::after {
+        position: absolute;
+        top: -6px;
+        left: 10px;
+        display: inline-block;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid white;
+        border-left: 6px solid transparent;
+        content: '';
+      }
+      /*this is for the dropdown underline...*/
+      .nav>li>a:hover, .nav>li>a:focus{
+        text-decoration:underline;
+      }
+      .dropdown-menu{
+        min-width: 300px;
+      }
+      .active {
+       pointer-events: none;
+       cursor: default;
+       background-color: #41C946;
+    } 
+    </style>
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+  <script src="js/html5shiv.js"></script>
+  <script src="js/respond/respond.min.js"></script>
+  <script src="js/dropdown.js"></script>
+<![endif]-->
+  </head>
+  <body>
+      <br>
+     <div class="navbar navbar-fixed-top">
+      <div class="container">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      <a class="navbar-brand">Surfblog:</a>
+      <div class="nav-collapse collapse navbar-responsive-collapse">
+        {% if user %}
+        <ul class="nav navbar-nav">
+        <!-- the 'recommended one'. currently on hold though since it 
+        cannot seem to slice TWO dashes; leaves /searchresults/search_string chopped 
+        at search_string and incorrectly concatenates the next route -->
+<!--         {% set navigation_bar = [
+          ('/','index', 'Home'),
+          ('/','settings', 'Profile'),
+          ('/','users', 'All Users'),
+          ('/','feed', 'All Posts Feed'),
+          ('/','search', 'Find a Post'),
+          ('/','logout','Logout')
+        ] -%}
+
+      {% for href, id, caption in navigation_bar %}
+        <li{% if id == active_page %} class="active"{% endif
+        %}><a href="{{ id|e }}">{{ caption|e }}</a></li>
+      {% endfor %} -->
+
+        <!-- SECOND BAR, works but uses old endpoint clues to piece together the location you're at -->
+        {%- for endpoint, caption in [
+      ('index', 'Home'),
+      ('settings', 'Profile'),
+      ('users', 'All Users'),
+      ('feed', 'All Posts Feed'),
+      ('search', 'Find a Post'),
+      ('logout','Logout')
+    ] %}
+    <li{% if endpoint == request.endpoint %} class="active"{% endif
+      %}><a href={{ url_for(endpoint) }}>{{ caption }}</a>
+    {%- endfor %}
+
+    <!-- FIRST BAR, no highlighted active link -->
+    <!-- 
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          {% if user %}
+          <li><a href="{{ url_for('settings') }}">Profile</a></li>
+          <li><a href="{{ url_for('users') }}">All Users</a></li>
+          <li><a href="{{ url_for('feed') }}">All Posts Feed</a></li>
+          <li><a href="{{ url_for('search') }}">Find a Post</a></li>
+          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+          -->
+
+        </ul>
+
+        <div class="pull-right">
+        <form class="navbar-form navbar-left" action="{{ url_for('.searchresults')}}">
+          <div class="form-inline">
+            <input type="text" class="form-control" placeholder="Search Posts" name="postsearch" id="postsearch">
+          <button type="submit" class="btn btn-primary" align="right">Search</button>
+          </div>
+          </form>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+    </div>
+
+  </div>
+
+  <br>
+  <div class="container-narrow">
+    <hr>
+        {% include 'flash.html' %}
+
+    {% block content %}{% endblock %}
+  <div class="footer"></div>
+  </div>
+  </body>
+</html>
